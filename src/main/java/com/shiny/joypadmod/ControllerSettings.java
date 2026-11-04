@@ -84,6 +84,11 @@ public class ControllerSettings {
     public static boolean invertYAxis = false;
     public static boolean grabMouse = false;
 
+    // When true (default) the mod draws its own on-screen cursor in menus and drives the game's mouse position
+    // from the joypad stick. When false the mod never draws or moves a cursor and leaves the real mouse alone,
+    // which is what you want if the OS / driver already turns a stick into a mouse (e.g. ROG Ally / Steam Input).
+    public static boolean virtualCursor = true;
+
     public static ConfigFile config = null;
 
     public ControllerSettings(File configFile) {
@@ -883,6 +888,10 @@ public class ControllerSettings {
             saveCurrentJoyBindings();
         } else if (optionKey.contains("GrabMouse")) {
             grabMouse = Boolean.parseBoolean(value);
+        } else if (optionKey.contains("VirtualCursor")) {
+            virtualCursor = Boolean.parseBoolean(value);
+            // drop any held virtual mouse buttons so nothing stays "clicked" when the cursor mode changes
+            VirtualMouse.unpressAllButtons();
         } else if (optionKey.contains("DisplayHints")) {
             displayHints = Boolean.parseBoolean(value);
         }

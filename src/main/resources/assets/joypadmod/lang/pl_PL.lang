@@ -21,6 +21,7 @@ controlMenu.toggleInstructions=Spacja wł/wył gamepad
 
 -Global-.SharedProfile=Wspólne ustawienia
 -Global-.GrabMouse=Przechwycenie myszki
+-Global-.VirtualCursor=Wirtualny kursor
 -Global-.displayAllControls=Pokaż wszystkie gamepad-y
 
 joy.guiRightClick=Lewy klik

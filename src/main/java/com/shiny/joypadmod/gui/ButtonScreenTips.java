@@ -69,7 +69,7 @@ public class ButtonScreenTips extends Gui {
             new HintString("joy.interact", "menuHint.takehalf", "menuHint.placeone") /* take half stack / drop 1 item */};
 
     Minecraft mc = Minecraft.getMinecraft();
-    FontRenderer fr = mc.fontRenderer;
+    FontRenderer fr = mc.fontRendererObj;
     int currentX = 5;
     int currentY = 20;
 
@@ -116,9 +116,9 @@ public class ButtonScreenTips extends Gui {
         int height = scaled.getScaledHeight();
 
         if (mc.currentScreen instanceof GuiContainer) {
-            boolean isHolding = mc.player != null &&
-                    mc.player.inventory != null &&
-                    mc.player.inventory.getItemStack() != null;
+            boolean isHolding = mc.thePlayer != null &&
+                    mc.thePlayer.inventory != null &&
+                    mc.thePlayer.inventory.getItemStack() != null;
             int maxLen = findMaxStringLength(blTipsMenu, true, isHolding);
             currentX = width / 2 - 100 - maxLen;
             currentY = height - ((fr.FONT_HEIGHT * blTipsMenu.length) + (blTipsMenu.length * 5));

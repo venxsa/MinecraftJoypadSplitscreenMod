@@ -57,6 +57,9 @@ public class ConfigFile {
 
         setSharedProfile(config.get(globalCat, "SharedProfile", false).getBoolean(false));
 
+        // true = the mod draws/moves its own cursor in menus (default). false = leave the real mouse alone.
+        ControllerSettings.virtualCursor = config.get(globalCat, "VirtualCursor", true).getBoolean(true);
+
         userCategory = "Joypad-" + userName;
 
         if (config.hasCategory(userCategory.toLowerCase())) {
@@ -81,7 +84,8 @@ public class ConfigFile {
 
         JoypadMod.logger.info(userName + "'s JoyNo == " + preferedJoyNo + " (" + preferedJoyName + "). SharedProfile = "
                 + getConfigFileSetting("-Global-.SharedProfile") + ". GrabMouse = "
-                + getConfigFileSetting("-Global-.GrabMouse") + ".  invertYAxis = " + ControllerSettings.invertYAxis
+                + getConfigFileSetting("-Global-.GrabMouse") + ". VirtualCursor = " + ControllerSettings.virtualCursor
+                + ".  invertYAxis = " + ControllerSettings.invertYAxis
                 + ". ConfigVersion " + lastConfigFileVersion + ". Game Sensitivity multiplier: "
                 + ControllerSettings.inGameSensitivity + ". Menu Sensitivity multiplier: "
                 + ControllerSettings.inMenuSensitivity);
@@ -409,6 +413,8 @@ public class ConfigFile {
         config.addCustomCategoryComment(
                 globalCat,
                 "GrabMouse = will grab mouse when in game (generally not good for splitscreen)\r\n"
+                        + "VirtualCursor = true draws the mod's own cursor in menus and moves the mouse with the joypad stick. "
+                        + "Set to false if your OS/driver already maps a stick to the mouse (ROG Ally, Steam Input, ...)\r\n"
                         + "LoggingLevel = 0-4 levels of logging ranging from next to none to very verbose. 1 recommended unless debugging.\r\n"
                         + "SharedProfile = Will share joypad settings across all users except for invert");
     }

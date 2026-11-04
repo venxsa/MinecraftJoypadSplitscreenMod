@@ -20,7 +20,7 @@ public class JoypadAdvancedMenu extends GuiScreen {
     private JoypadConfigMenu parent;
 
     private String[] otherButtons = {"controlMenu.calibrate", "controlMenu.invert"};
-    private String[] gameOptions = {"-Global-.SharedProfile", "-Global-.displayAllControls", "-Global-.GrabMouse", "-User-.DisplayHints", "-User-.LegacyInput"};
+    private String[] gameOptions = {"-Global-.SharedProfile", "-Global-.displayAllControls", "-Global-.GrabMouse", "-Global-.VirtualCursor", "-User-.DisplayHints", "-User-.LegacyInput"};
 
     public JoypadAdvancedMenu(JoypadConfigMenu parent, int joyIndex) {
         super();
@@ -52,13 +52,13 @@ public class JoypadAdvancedMenu extends GuiScreen {
 
         for (String otherButton : otherButtons) {
             String buttonString = createToggleString(otherButton, true);
-            int width = mc.fontRenderer.getStringWidth(buttonString);
+            int width = mc.fontRendererObj.getStringWidth(buttonString);
             maxWidth = Math.max(width, maxWidth);
         }
 
         for (String gameOption : gameOptions) {
             String buttonString = createToggleString(gameOption, true);
-            int width = mc.fontRenderer.getStringWidth(buttonString);
+            int width = mc.fontRendererObj.getStringWidth(buttonString);
             maxWidth = Math.max(width, maxWidth);
         }
 

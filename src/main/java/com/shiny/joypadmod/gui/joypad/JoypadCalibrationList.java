@@ -111,8 +111,8 @@ public class JoypadCalibrationList extends GuiScrollingList {
 
             for (int i = 5 * var1; i < 5 * var1 + 5; i++) {
                 if (buttonList.size() > i) {
-                    buttonList.get(i).y = var3 + 5;
-                    buttonList.get(i).drawButton(Minecraft.getMinecraft(), k, i1, 0);
+                    buttonList.get(i).yPosition = var3 + 5;
+                    buttonList.get(i).drawButton(Minecraft.getMinecraft(), k, i1);
                 }
             }
         }
@@ -122,8 +122,8 @@ public class JoypadCalibrationList extends GuiScrollingList {
         InputDevice controller = ControllerSettings.JoypadModInputLibrary.getController(joypadIndex);
         int yPos = yStart;
         DecimalFormat df = new DecimalFormat("#0.00");
-        int autoButtonWidth = mc.fontRenderer.getStringWidth(McObfuscationHelper.lookupString("calibrationMenu.auto")) + 10;
-        int resetButtonWidth = mc.fontRenderer.getStringWidth(McObfuscationHelper.lookupString("controls.reset")) + 10;
+        int autoButtonWidth = mc.fontRendererObj.getStringWidth(McObfuscationHelper.lookupString("calibrationMenu.auto")) + 10;
+        int resetButtonWidth = mc.fontRendererObj.getStringWidth(McObfuscationHelper.lookupString("controls.reset")) + 10;
         int directionButWidth = 15;
 
         int maxSize = parent.fr.getStringWidth("X Axis:");

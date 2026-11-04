@@ -21,6 +21,7 @@ controlMenu.toggleInstructions=Press space to toggle controller
 
 -Global-.SharedProfile=Share settings
 -Global-.GrabMouse=Mouse Grab
+-Global-.VirtualCursor=Virtual cursor
 -Global-.displayAllControls=Display all controllers
 
 -User-.DisplayHints=Button hints

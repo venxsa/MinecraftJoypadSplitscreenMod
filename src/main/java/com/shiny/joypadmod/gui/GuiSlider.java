@@ -8,7 +8,7 @@ import com.shiny.joypadmod.utils.McObfuscationHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.client.resources.I18n;
 
 public class GuiSlider extends GuiButton {
     /**
@@ -64,15 +64,15 @@ public class GuiSlider extends GuiButton {
 
         if (this.visible) {
             if (this.dragging) {
-                setValue((float) (mouseX - (this.x + 4)) / (float) (this.width - 8));
+                setValue((float) (mouseX - (this.xPosition + 4)) / (float) (this.width - 8));
                 this.updateText();
             }
 
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            this.drawTexturedModalRect(this.x + (int) (this.sliderValue * (this.width - 8)), this.y, 0,
+            this.drawTexturedModalRect(this.xPosition + (int) (this.sliderValue * (this.width - 8)), this.yPosition, 0,
                     66, 4, 20);
-            this.drawTexturedModalRect(this.x + (int) (this.sliderValue * (this.width - 8)) + 4,
-                    this.y, 196, 66, 4, 20);
+            this.drawTexturedModalRect(this.xPosition + (int) (this.sliderValue * (this.width - 8)) + 4,
+                    this.yPosition, 196, 66, 4, 20);
         }
     }
 
@@ -82,7 +82,7 @@ public class GuiSlider extends GuiButton {
     @Override
     public boolean mousePressed(Minecraft minecraft, int mouseX, int mouseY) {
         if (super.mousePressed(minecraft, mouseX, mouseY)) {
-            setValue((float) (mouseX - (this.x + 4)) / (float) (this.width - 8));
+            setValue((float) (mouseX - (this.xPosition + 4)) / (float) (this.width - 8));
 
             this.dragging = true;
             return true;
@@ -109,11 +109,11 @@ public class GuiSlider extends GuiButton {
                     McObfuscationHelper.lookupString("options.sensitivity"));
         }
         if (output != "") {
-            FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
+            FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
             String value = ": " + (int) (this.sliderValue * 100.0F);
             this.displayString = fr.trimStringToWidth(output, this.width - fr.getStringWidth(value)) + value;
         } else {
-            this.displayString = I18n.translateToLocalFormatted(this.baseDisplayString,
+            this.displayString = I18n.format(this.baseDisplayString,
                     (int) (this.sliderValue * 100.0F));
         }
     }

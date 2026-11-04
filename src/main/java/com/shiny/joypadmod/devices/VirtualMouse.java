@@ -99,7 +99,7 @@ public class VirtualMouse {
         if (ControllerSettings.loggingLevel > 1)
             JoypadMod.logger.info("Holding mouse button: " + button);
         setMouseButton(button, true);
-        addMouseEvent((byte) button, (byte) 1, lastX, lastY, 0, 1000);
+        addMouseEvent((byte) button, (byte) 1, eventX(), eventY(), 0, 1000);
         buttonsDown[button] = 1;
         return true;
     }
@@ -114,13 +114,24 @@ public class VirtualMouse {
         if (ControllerSettings.loggingLevel > 1)
             JoypadMod.logger.info("Releasing mouse button: " + button);
         setMouseButton(button, false);
-        addMouseEvent((byte) button, (byte) 0, lastX, lastY, 0, 1000);
+        addMouseEvent((byte) button, (byte) 0, eventX(), eventY(), 0, 1000);
         buttonsDown[button] = 0;
         return true;
     }
 
     public static boolean isButtonDown(int button) {
         return buttonsDown[button] == 1;
+    }
+
+    // Absolute position that is attached to injected click events.
+    // With the virtual cursor this is the position we last set ourselves; without it the click has to land
+    // wherever the real mouse currently is, otherwise every joypad click would hit the (0,0) corner.
+    private static int eventX() {
+        return ControllerSettings.virtualCursor ? lastX : Mouse.getX();
+    }
+
+    private static int eventY() {
+        return ControllerSettings.virtualCursor ? lastY : Mouse.getY();
     }
 
     public static boolean scrollWheel(int event_dwheel) {
@@ -134,6 +145,10 @@ public class VirtualMouse {
     }
 
     public static boolean setXY(int x, int y) {
+        // virtual cursor disabled: never overwrite the position of the real mouse
+        if (!ControllerSettings.virtualCursor)
+            return false;
+
         if (!checkCreated())
             return false;
 

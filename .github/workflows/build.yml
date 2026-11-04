@@ -1,0 +1,59 @@
+name: Build mod
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  # ForgeGradle 2.1 (Forge 1.8.9) needs JDK 8 and an old Gradle. The Gradle wrapper is not committed
+  # (it is in .gitignore), so Gradle is installed explicitly.
+  GRADLE_VERSION: "4.5"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 8
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "8"
+
+      - name: Install Gradle ${{ env.GRADLE_VERSION }}
+        run: |
+          curl -fsSL --retry 3 -o "$RUNNER_TEMP/gradle.zip" \
+            "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip"
+          unzip -q "$RUNNER_TEMP/gradle.zip" -d "$HOME"
+          echo "$HOME/gradle-${GRADLE_VERSION}/bin" >> "$GITHUB_PATH"
+
+      - name: Give Gradle enough memory for ForgeGradle
+        run: |
+          mkdir -p "$HOME/.gradle"
+          echo "org.gradle.jvmargs=-Xmx3g" >> "$HOME/.gradle/gradle.properties"
+
+      - name: Cache Gradle and ForgeGradle downloads
+        uses: actions/cache@v4
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-forgegradle-1.8.9-${{ hashFiles('build.gradle') }}
+          restore-keys: |
+            ${{ runner.os }}-forgegradle-1.8.9-
+
+      - name: Build mod
+        run: gradle --no-daemon setupCiWorkspace build
+
+      - name: Upload mod jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: JoypadMod-1.8.9
+          path: |
+            build/libs/*.jar
+            !build/libs/*-sources.jar
+          if-no-files-found: error

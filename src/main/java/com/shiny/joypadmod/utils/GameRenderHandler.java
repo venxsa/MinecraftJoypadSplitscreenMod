@@ -113,7 +113,7 @@ public class GameRenderHandler {
         }
 
         if (displayCountDown > 0) {
-            Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(displayMessage, 0, 0, 0xFFFF55);
+            Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(displayMessage, 0, 0, 0xFFFF55);
             displayCountDown--;
         }
 
@@ -170,6 +170,10 @@ public class GameRenderHandler {
 
     private static void DrawRetical() {
 
+        // virtual cursor disabled: no reticle, and the stick no longer moves a cursor in menus
+        if (!ControllerSettings.virtualCursor)
+            return;
+
         if (mc.currentScreen == null || !ControllerSettings.isInputEnabled())
             return;
 
@@ -180,10 +184,10 @@ public class GameRenderHandler {
     }
 
     private static void UpdateInGameCamera() {
-        if (mc.player != null) {
+        if (mc.thePlayer != null) {
             if (JoypadMouse.pollAxis(false)) {
 
-                mc.player.turn(JoypadMouse.AxisReader.deltaX, JoypadMouse.AxisReader.deltaY
+                mc.thePlayer.setAngles(JoypadMouse.AxisReader.deltaX, JoypadMouse.AxisReader.deltaY
                         * (ControllerSettings.getInvertYAxis() ? 1.0f : -1.0f));
             }
         }
@@ -193,7 +197,7 @@ public class GameRenderHandler {
 
         if (VirtualMouse.isButtonDown(0) || VirtualMouse.isButtonDown(1)) {
             // VirtualMouse.moveMouse(JoypadMouse.getmcX(), JoypadMouse.getmcY());
-            McGuiHelper.guiMouseDrag(JoypadMouse.getX(), JoypadMouse.getY());
+            McGuiHelper.guiMouseDrag(JoypadMouse.getDragX(), JoypadMouse.getDragY());
             VirtualMouse.setMouseButton(JoypadMouse.isLeftButtonDown() ? 0 : 1, true);
         }
 
@@ -301,7 +305,7 @@ public class GameRenderHandler {
     }
 
     public static boolean InGameCheckNeeded() {
-        return CheckIfModEnabled() && mc.player != null && mc.currentScreen == null;
+        return CheckIfModEnabled() && mc.thePlayer != null && mc.currentScreen == null;
     }
 
     public static boolean InGuiCheckNeeded() {

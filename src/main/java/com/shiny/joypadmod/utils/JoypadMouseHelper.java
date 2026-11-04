@@ -12,7 +12,9 @@ public class JoypadMouseHelper extends MouseHelper {
      */
     @Override
     public void grabMouseCursor() {
-        if (ControllerSettings.isInputEnabled() && !ControllerSettings.grabMouse) {
+        // With the virtual cursor disabled the real mouse is in charge, so Minecraft must grab/ungrab it normally
+        // (needed for mouse-look when the stick is mapped to a mouse by the OS / driver).
+        if (ControllerSettings.virtualCursor && ControllerSettings.isInputEnabled() && !ControllerSettings.grabMouse) {
             // VirtualMouse.setGrabbed(true);
             return;
         }
@@ -25,7 +27,7 @@ public class JoypadMouseHelper extends MouseHelper {
      */
     @Override
     public void ungrabMouseCursor() {
-        if (ControllerSettings.isInputEnabled() && !ControllerSettings.grabMouse) {
+        if (ControllerSettings.virtualCursor && ControllerSettings.isInputEnabled() && !ControllerSettings.grabMouse) {
             // VirtualMouse.setGrabbed(false);
             return;
         }

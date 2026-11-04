@@ -4,6 +4,7 @@ import com.shiny.joypadmod.ControllerSettings;
 import com.shiny.joypadmod.JoypadMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import org.lwjgl.input.Mouse;
 
 import com.shiny.joypadmod.event.ControllerInputEvent.EventType;
 
@@ -22,6 +23,26 @@ public class JoypadMouse {
 
     public static int getmcY() {
         return AxisReader.mcY;
+    }
+
+    // GUI-scaled coordinates to use while dragging with a held joypad button.
+    // With the virtual cursor that is our own cursor; otherwise it is wherever the real mouse is.
+    public static int getDragX() {
+        if (ControllerSettings.virtualCursor)
+            return AxisReader.x;
+
+        final Minecraft mc = Minecraft.getMinecraft();
+        final ScaledResolution scaledResolution = JoypadMod.GetScaledResolution();
+        return Mouse.getX() * scaledResolution.getScaledWidth() / mc.displayWidth;
+    }
+
+    public static int getDragY() {
+        if (ControllerSettings.virtualCursor)
+            return AxisReader.y;
+
+        final Minecraft mc = Minecraft.getMinecraft();
+        final ScaledResolution scaledResolution = JoypadMod.GetScaledResolution();
+        return scaledResolution.getScaledHeight() - Mouse.getY() * scaledResolution.getScaledHeight() / mc.displayHeight - 1;
     }
 
     public static void pollAxis() {
